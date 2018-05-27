@@ -1,13 +1,13 @@
 package route
 
-import com.google.inject.Inject
-import controllers.GameAnalyticsController
+import controllers.ApiController
+import play.api.mvc.{Action, AnyContent, RequestHeader}
 import play.api.routing._
 import play.api.routing.sird._
 
-class ApiRouter @Inject()(controller: GameAnalyticsController) extends SimpleRouter {
+class ApiRouter extends SimpleRouter {
 
-  override def routes = {
-    case GET(p"/game/$correlationId") => controller.index
+  override def routes: PartialFunction[RequestHeader, Action[AnyContent]] = {
+    case GET(p"/game/$correlationId") => ApiController.instance.game
   }
 }

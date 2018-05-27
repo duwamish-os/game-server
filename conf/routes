@@ -1,1 +1,1 @@
-GET     /            controllers.GameAnalyticsController.index()
+->      /api                        route.ApiRouter

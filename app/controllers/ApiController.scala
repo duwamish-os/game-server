@@ -1,20 +1,29 @@
 package controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OWrites, Reads}
 import play.api.mvc._
+
+final case class ApiResponse(correlationID: String, scores: List[Map[String, String]])
+
+object ApiResponse {
+  implicit val reads: Reads[ApiResponse] = Json.reads[ApiResponse]
+  implicit val writes: OWrites[ApiResponse] = Json.writes[ApiResponse]
+}
 
 class ApiController extends Controller {
 
-  def game = Action {
+  import ApiResponse._
 
-    val posts = List(
+  def game(correlationId: String) = Action {
+
+    val response = ApiResponse(correlationId, List(
       Map("player" -> "upd",
         "score" -> "1000"),
 
       Map("player" -> "dude",
-        "score" -> "999"))
+        "score" -> "999")))
 
-    Ok(Json.toJson(posts))
+    Ok(Json.toJson(response))
   }
 
 }

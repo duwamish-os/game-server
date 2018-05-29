@@ -1,7 +1,6 @@
-package controllers
+package api
 
 import play.api.libs.json.{Json, OWrites, Reads}
-import play.api.mvc._
 
 final case class ApiResponse(correlationID: String, scores: List[Map[String, String]])
 
@@ -10,12 +9,9 @@ object ApiResponse {
   implicit val writes: OWrites[ApiResponse] = Json.writes[ApiResponse]
 }
 
-class ApiController extends Controller {
+class GameApi {
 
-  import ApiResponse._
-
-  def game(correlationId: String) = Action {
-
+  def scores(correlationId: String): ApiResponse = {
     val response = ApiResponse(correlationId, List(
       Map("player" -> "upd",
         "score" -> "1000"),
@@ -23,11 +19,11 @@ class ApiController extends Controller {
       Map("player" -> "dude",
         "score" -> "999")))
 
-    Ok(Json.toJson(response))
+    response
   }
 
 }
 
-object ApiController {
-  lazy val instance = new ApiController
+object GameApi {
+  lazy val instance = new GameApi
 }
